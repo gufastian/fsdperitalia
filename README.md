@@ -39,9 +39,9 @@ Apri `http://localhost:5173/`. Ogni modifica a `index.html` ricarica automaticam
 3. Seleziona `main` branch, root folder
 4. Salva → online in 1–2 minuti
 
-Per il dominio custom `fsdperitalia.it`:
-1. Il file `CNAME` in root contiene `fsdperitalia.it` ed è letto da GitHub Pages a ogni deploy
-2. In **Settings → Pages**, inserisci `fsdperitalia.it` come dominio custom
+Per il dominio custom `fsdperitalia.org`:
+1. Il file `CNAME` in root contiene `fsdperitalia.org` ed è letto da GitHub Pages a ogni deploy
+2. In **Settings → Pages**, inserisci `fsdperitalia.org` come dominio custom
 3. Nel DNS del dominio, configura l'apex verso GitHub Pages:
    - `A 185.199.108.153`
    - `A 185.199.109.153`
