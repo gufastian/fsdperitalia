@@ -12,14 +12,15 @@ Permette a chiunque, in 30 secondi, di:
 
 ## Privacy
 
-**Zero tracking remoto. Zero raccolta dati. Zero cookie. Zero analytics.**
+**Zero cookie. Zero analytics. Nessuna raccolta di dati personali applicativi.**
 
-- Tutto il codice gira nel browser dell'utente.
-- Non ci sono chiamate esterne: niente font remoti, niente CDN, niente analytics.
-- Il contatore in homepage è memorizzato solo in `localStorage` e mostra l'attività personale dell'utente, non un dato globale.
-- Nessun form di registrazione, nessun backend.
+- Tutto il codice della pagina gira nel browser dell'utente.
+- Non ci sono font remoti, CDN o analytics.
+- Il contatore pubblico usa un Cloudflare Worker che salva solo un numero aggregato di click sui pulsanti di azione.
+- Il dedupe è client-side con `localStorage`, così il Worker non riceve identificatori persistenti da salvare.
+- Nessun form di registrazione, nessun backend applicativo che conserva IP, user agent, email, nomi o contenuti.
 
-Il GDPR è soddisfatto by design perché **il sito non tratta dati personali**.
+Il GDPR resta soddisfatto by design perché il progetto conserva solo un conteggio aggregato. Cloudflare va indicato come fornitore tecnico per l'erogazione del Worker.
 
 ## Sviluppo locale con hot reload
 
@@ -56,25 +57,28 @@ Per il dominio custom `fsdperitalia.org`:
 - `package.json` / `package-lock.json` — server locale Vite con hot reload
 - `.gitignore` — esclusione dipendenze e artefatti locali
 - `README.md` — questo file
-- `TRACKING.md` — nota tecnica sul perché non tracciamo invii reali
+- `TRACKING.md` — nota tecnica sul contatore e sui limiti del tracciamento invii
+- `worker/` — Cloudflare Worker del contatore globale
 - `CNAME` — dominio custom GitHub Pages
 - `.nojekyll` — evita trasformazioni Jekyll su GitHub Pages
 - `LICENSE` — CC0
 
 ## Limiti tecnici noti
 
-- **Invio reale non tracciabile da GitHub Pages** — un link `mailto:` può aprire il client di posta, ma il browser non può sapere se l'utente ha poi premuto "Invia". Tracciare l'invio reale richiederebbe un backend, analytics esterni, un form relay o una casella in BCC: tutte soluzioni che introdurrebbero trattamento di dati personali o servizi terzi.
+- **Invio reale non tracciabile da GitHub Pages** — il contatore misura click unici per browser sui pulsanti di azione, non email realmente spedite. Il browser non può sapere se l'utente ha poi premuto "Invia" nel client di posta.
 - **Lunghezza `mailto:`** — il testo dell'email è ~2.400 caratteri; funziona su Gmail/Outlook desktop, ma alcuni client mobili potrebbero troncarlo. Esiste anche il pulsante "Copia testo" come fallback.
 - **PEC del MIT** — accetta SOLO email da altre PEC. L'utente deve avere una PEC personale (chi ha partita IVA ne ha già una; per i privati va richiesta a un gestore).
 - **Indirizzi parlamentari in CC** — gli indirizzi inseriti seguono lo schema standard di Camera/Senato ma andrebbero verificati uno per uno sui siti ufficiali prima di un lancio massivo. Patches benvenute.
 
 ## Contributi
 
-Pull request benvenute. In particolare:
+Pull request benvenute. Vedi [`CONTRIBUTING.md`](CONTRIBUTING.md) per le regole di contribuzione e deployment.
+
+In particolare sono utili:
 - Verifica indirizzi parlamentari aggiornati
-- Aggiornamento delle fonti (TCMV vota giugno 2026 — bisognerà aggiornare il testo dopo)
-- Traduzioni (EN, DE, FR)
-- Refactor minore del CSS
+- Aggiornamento delle fonti e della cronologia della vicenda
+- Correzione di link rotti, refusi o imprecisioni
+- Miglioramenti di accessibilità e compatibilità mobile
 
 ## Licenza
 

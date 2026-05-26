@@ -1,0 +1,2 @@
+[git_shield]
+allowlist_paths = [".pii-allowlist"]

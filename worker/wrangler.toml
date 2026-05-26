@@ -1,0 +1,16 @@
+name = "fsdperitalia-counter"
+main = "counter.js"
+compatibility_date = "2026-05-26"
+workers_dev = true
+
+# Dopo aver creato il namespace con:
+#   npx wrangler kv namespace create COUNTER_KV
+# sostituisci l'id qui sotto.
+[[kv_namespaces]]
+binding = "COUNTER_KV"
+id = "1a2b44ed81984fa08171a4a2a6a40b5f"
+
+# Se il dominio passa da Cloudflare, puoi servire il counter sullo stesso dominio:
+# routes = [
+#   { pattern = "fsdperitalia.it/api/counter", zone_name = "fsdperitalia.it" }
+# ]

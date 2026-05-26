@@ -428,7 +428,7 @@ body::before {
 }
 
 /* ============ FAQ ============ */
-.faq-section { padding: 100px 0; background: var(--paper); margin: 0 -100vw; padding-left: calc(100vw - 50%); padding-right: calc(100vw - 50%); }
+.faq-section { padding: 100px 0; background: var(--paper); box-shadow: 0 0 0 100vmax var(--paper); clip-path: inset(0 -100vmax); }
 .faq-inner { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
 
 .faq-item {
@@ -463,7 +463,7 @@ body::before {
   line-height: 1.6;
 }
 .faq-item.open .faq-answer {
-  max-height: 600px;
+  max-height: none;
   padding-top: 16px;
 }
 
@@ -667,6 +667,119 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
   margin-bottom: 6px;
 }
 
+
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+
+  .topbar-inner {
+    align-items: flex-start;
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  .topbar-nav {
+    width: 100%;
+    gap: 0;
+    justify-content: space-between;
+    font-size: 11px;
+  }
+
+  .hero { padding: 56px 0 40px; }
+
+  .hero h1 {
+    font-size: clamp(42px, 17vw, 64px);
+    overflow-wrap: anywhere;
+  }
+
+  .hero-lede,
+  .section-intro {
+    font-size: 17px;
+  }
+
+  .status-grid { grid-template-columns: 1fr; }
+
+  .status-cell,
+  .action-card {
+    padding: 28px 20px;
+  }
+
+  .cta-section,
+  .timeline-section,
+  .faq-section {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .section-title {
+    font-size: clamp(36px, 14vw, 52px);
+  }
+
+  .action-meta {
+    flex-wrap: wrap;
+    gap: 8px 14px;
+  }
+
+  .counter-box {
+    padding: 44px 20px;
+    margin: 44px 0;
+  }
+
+  .timeline { padding-left: 24px; }
+
+  .timeline-item::before {
+    left: -33px;
+  }
+
+  .faq-section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .faq-inner { padding: 0 16px; }
+
+  .faq-question {
+    align-items: flex-start;
+    gap: 16px;
+    font-size: 19px;
+    line-height: 1.2;
+  }
+
+  .faq-answer {
+    font-size: 16px;
+  }
+
+  .modal-backdrop {
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .modal {
+    max-height: calc(100vh - 24px);
+    padding: 36px 18px 24px;
+    box-shadow: 8px 8px 0 var(--accent);
+  }
+
+  .modal-title { font-size: 30px; }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions .btn,
+  .modal-actions a.btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .toast {
+    left: 16px;
+    right: 16px;
+    transform: translateY(120%);
+    text-align: center;
+  }
+
+  .toast.show { transform: translateY(0); }
+}
 </style>
 </head>
 <body>
@@ -803,12 +916,10 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
     <div class="counter-box">
       <div class="counter-label">→ Azione 03 / Amplifica</div>
       <div class="counter-number" id="counter">0</div>
-      <div class="counter-sub">azioni preparate da questo browser (solo tu vedi questo numero)</div>
-      <p style="font-size: 14px; opacity: 0.6; max-width: 580px; margin: 24px auto 0; line-height: 1.6;">
-        Con GitHub Pages non esiste un server del progetto che possa contare gli invii. Il numero qui sopra resta
-        nel tuo browser (<code>localStorage</code>): conta aperture, copie email e copie PEC locali, non email realmente spedite.
-        Un <code>mailto:</code> non può sapere se poi premi "Invia" nel client di posta. <br><br>
-        L'unica metrica reale è il <strong>volume di posta che arriva al MIT</strong>. Per farlo crescere, condividi.
+      <div class="counter-sub">azioni avviate dalla community</div>
+      <p style="font-size: 16px; opacity: 0.75; max-width: 580px; margin: 24px auto 0; line-height: 1.6;">
+        Ogni click su una delle azioni aumenta la pressione civica: email, PEC, copia del testo o condivisione.
+        Il numero conta la partecipazione, non le email effettivamente inviate.
       </p>
       <div style="margin-top: 32px;">
         <a href="#" class="btn btn-secondary" onclick="event.preventDefault(); shareLink();">Condividi questa pagina →</a>
@@ -877,17 +988,17 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question">Questo sito raccoglie i miei dati? <span class="faq-toggle">+</span></div>
       <div class="faq-answer">
-        <p><strong>No. Zero.</strong> Niente form di registrazione, niente cookie, niente analytics, niente chiamate a server di terze parti.</p>
-        <p style="margin-top: 12px;">Quando clicchi su "Apri lettera" si genera un link <code>mailto:</code> che apre il tuo client email con il testo già pronto: sei <em>tu</em> a decidere cosa inviare e da quale indirizzo. Tutto il codice gira nel tuo browser: tasto destro → "Visualizza sorgente" e puoi verificarlo. Il codice è anche <a href="#fonti" style="color: var(--accent);">pubblicato su GitHub</a>.</p>
-        <p style="margin-top: 12px;">Il contatore in pagina è memorizzato solo nel tuo browser (<code>localStorage</code>) e <strong>non condiviso con nessuno</strong>. Nessuno — né noi, né il MIT, né Tesla — sa quante persone hanno usato il sito tramite questo contatore.</p>
+        <p><strong>No dati personali applicativi.</strong> Niente form di registrazione, niente cookie, niente analytics, niente font o CDN esterni.</p>
+        <p style="margin-top: 12px;">Quando clicchi su "Apri lettera" si genera un link <code>mailto:</code> che apre il tuo client email con il testo già pronto: sei <em>tu</em> a decidere cosa inviare e da quale indirizzo.</p>
+        <p style="margin-top: 12px;">Il contatore pubblico salva solo un numero aggregato di click tramite Cloudflare Worker. Per non contare più volte lo stesso browser usiamo un flag locale in <code>localStorage</code>, che non viene inviato al Worker.</p>
       </div>
     </div>
 
     <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-question">Possiamo tracciare le email realmente inviate? <span class="faq-toggle">+</span></div>
+      <div class="faq-question">Cosa conta il numerino? <span class="faq-toggle">+</span></div>
       <div class="faq-answer">
-        <p><strong>No, non in modo anonimo e solo con GitHub Pages.</strong> Il browser può aprire un <code>mailto:</code>, ma non può sapere se l'utente ha poi premuto "Invia" in Gmail, Outlook, Apple Mail o PEC.</p>
-        <p style="margin-top: 12px;">Le alternative che tracciano davvero richiedono un server, analytics esterni, un form relay o una casella in BCC. Tutte introdurrebbero trattamento di dati personali o servizi terzi. Per questo il sito misura solo l'intenzione locale e dichiara esplicitamente il limite.</p>
+        <p>Conta i click unici per browser sui pulsanti di azione: apertura email, copia del testo, copia PEC, apertura sito MIT o condivisione. Non può sapere se l'email viene poi inviata davvero.</p>
+        <p style="margin-top: 12px;">Abbiamo scelto questa soluzione perché dà un'indicazione pubblica della partecipazione senza salvare IP, cookie, fingerprint o altri identificatori.</p>
       </div>
     </div>
 
@@ -1017,7 +1128,7 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
       Tutte le fonti citate in questo sito sono accessibili pubblicamente. Se hai dubbi, controlla.
     </p>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; margin-top: 48px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 32px; margin-top: 48px;">
 
       <!-- BOX 1 -->
       <div style="background: var(--paper); padding: 32px; border-left: 4px solid var(--accent);">
@@ -1108,7 +1219,7 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
       <div>
         <div class="footer-h">Tecnico</div>
         <p>
-          Open source · Zero tracking remoto<br>
+          Open source · Counter aggregato<br>
           Zero analytics · Zero cookie<br>
           Tutto client-side<br>
           Compatibile con GitHub Pages
@@ -1185,7 +1296,7 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
 
     <div class="modal-actions">
       <button class="btn" onclick="copyPecText()">Copia tutto</button>
-      <a href="https://www.mit.gov.it" target="_blank" class="btn" style="background: var(--ink); text-decoration: none;">Apri sito MIT</a>
+      <a href="https://www.mit.gov.it" target="_blank" class="btn" style="background: var(--ink); text-decoration: none;" onclick="bumpCounter()">Apri sito MIT</a>
     </div>
   </div>
 </div>
@@ -1194,23 +1305,43 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
 <div class="toast" id="toast">✓ Testo copiato</div>
 
 <script>
-// ============ COUNTER (localStorage only) ============
-function initCounter() {
-  const today = new Date().toDateString();
-  const stored = localStorage.getItem('fsd_counter');
-  let data = stored ? JSON.parse(stored) : { date: today, count: 0 };
-  if (data.date !== today) data = { date: today, count: 0 };
-  document.getElementById('counter').textContent = data.count.toLocaleString('it-IT');
-  return data;
+// ============ GLOBAL COUNTER ============
+const COUNTER_ENDPOINT = 'https://fsdperitalia-counter.vekexasia.workers.dev/api/counter';
+const COUNTER_COUNTED_KEY = 'fsd_counter_action_counted_v1';
+
+async function initCounter() {
+  try {
+    const res = await fetch(COUNTER_ENDPOINT, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+      cache: 'no-store'
+    });
+    if (!res.ok) throw new Error('counter unavailable');
+    const data = await res.json();
+    animateCounter(Number(data.count) || 0);
+  } catch {
+    document.getElementById('counter').textContent = '—';
+  }
 }
-function bumpCounter() {
-  const today = new Date().toDateString();
-  const stored = localStorage.getItem('fsd_counter');
-  let data = stored ? JSON.parse(stored) : { date: today, count: 0 };
-  if (data.date !== today) data = { date: today, count: 0 };
-  data.count += 1;
-  localStorage.setItem('fsd_counter', JSON.stringify(data));
-  animateCounter(data.count);
+
+async function bumpCounter() {
+  if (localStorage.getItem(COUNTER_COUNTED_KEY) === '1') return;
+
+  localStorage.setItem(COUNTER_COUNTED_KEY, '1');
+
+  try {
+    const res = await fetch(COUNTER_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      cache: 'no-store',
+      keepalive: true
+    });
+    if (!res.ok) throw new Error('counter unavailable');
+    const data = await res.json();
+    animateCounter(Number(data.count) || 0);
+  } catch {
+    localStorage.removeItem(COUNTER_COUNTED_KEY);
+  }
 }
 function animateCounter(target) {
   const el = document.getElementById('counter');
@@ -1327,6 +1458,7 @@ ${new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 
 let currentModal = null;
 function openModal(type) {
   currentModal = type;
+  bumpCounter();
   if (type === 'email') {
     document.getElementById('emailBody').value = buildEmailBody();
     document.getElementById('modal-email').classList.add('open');
@@ -1379,16 +1511,16 @@ function sendEmail() {
 function copyText() {
   const text = document.getElementById('emailBody').value;
   navigator.clipboard.writeText(text).then(() => {
-    showToast('✓ Testo email copiato');
     bumpCounter();
+    showToast('✓ Testo email copiato');
   });
 }
 
 function copyPecText() {
   const text = document.getElementById('pecBody').value;
   navigator.clipboard.writeText(text).then(() => {
-    showToast('✓ Testo PEC copiato — incollalo nel tuo gestore PEC');
     bumpCounter();
+    showToast('✓ Testo PEC copiato — incollalo nel tuo gestore PEC');
   });
 }
 
@@ -1406,6 +1538,7 @@ function toggleFaq(el) {
 
 // ============ SHARE ============
 function shareLink() {
+  bumpCounter();
   const url = window.location.href;
   if (navigator.share) {
     navigator.share({

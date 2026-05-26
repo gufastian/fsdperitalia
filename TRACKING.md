@@ -1,28 +1,60 @@
-# Tracciamento invii
+# Tracciamento azioni
 
-## Vincolo
+## Cosa misuriamo
 
-Il sito è pubblicato come GitHub Pages statico. Non c'è backend, non ci sono cookie, non ci sono analytics e non ci sono chiamate a servizi terzi.
+Il contatore pubblico misura i click unici per browser sui pulsanti di azione:
 
-## Cosa si può tracciare
+- apertura email tramite `mailto:`
+- copia del testo email
+- copia del testo PEC
+- apertura del sito MIT
+- condivisione della pagina
 
-- Apertura del `mailto:` nel browser.
-- Copia del testo email o PEC.
-- Solo localmente, tramite `localStorage` dell'utente.
+Il dato salvato nel Cloudflare KV è solo aggregato:
 
-Questi eventi indicano intenzione di invio, non invio reale.
+```text
+action_clicks = 123
+```
 
-## Cosa non si può tracciare
+Non misuriamo email realmente inviate: dopo l'apertura del `mailto:`, il controllo passa al client di posta e il browser non può sapere se l'utente preme "Invia".
 
-Non è possibile sapere se l'utente ha premuto "Invia" nel proprio client email o nel gestore PEC. Dopo l'apertura del `mailto:`, il controllo passa fuori dal browser.
+## Cosa non salviamo
 
-## Perché non usiamo alternative
+Il Worker non salva:
 
-- Backend o serverless: richiede infrastruttura fuori da GitHub Pages.
-- Analytics esterni: introduce terze parti e tracciamento remoto.
-- BCC a una casella del progetto: raccoglie indirizzo email del mittente e contenuto del messaggio.
-- Pixel di tracciamento: non funziona in testo semplice, è bloccato da molti client ed è invasivo.
+- IP
+- user agent
+- referer
+- cookie
+- fingerprint
+- email
+- nome
+- città
+- testo del messaggio
+- identificatori pseudonimi
 
-## Scelta progettuale
+## Dedupe
 
-Il progetto resta privacy-first: misura solo l'attività locale e dichiara esplicitamente il limite. La metrica reale è il volume di posta ricevuta dal MIT, non un contatore pubblico gestito dal sito.
+Per evitare incrementi multipli dalla stessa persona, il dedupe è nel browser:
+
+```text
+localStorage.fsd_counter_action_counted_v1 = 1
+```
+
+Questa informazione non viene inviata al Worker. Se l'utente cancella i dati del browser o usa un altro dispositivo, può essere contato di nuovo.
+
+## Perché non deduplichiamo lato Worker
+
+Un dedupe lato Worker richiederebbe almeno una di queste tecniche:
+
+- IP address
+- cookie
+- fingerprint
+- token persistente salvato server-side
+- hash di un identificatore
+
+Sono tutte meno privacy-friendly perché creano o usano un identificatore individuale. Per questo il Worker mantiene solo il conteggio aggregato.
+
+## GDPR
+
+Il progetto non conserva dati personali applicativi. Cloudflare può trattare dati tecnici nei propri log infrastrutturali per fornire il servizio Worker/KV; va citato nella privacy come provider tecnico.

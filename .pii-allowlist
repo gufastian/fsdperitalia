@@ -1,0 +1,6 @@
+# False positives: public project/package names and non-secret localStorage key.
+^fsdperitalia$
+^fsd_counter_action_counted_v1$
+^worker:deploy$
+^wrangler deploy --config worker/wrangler\.toml$
+^\s*"worker:deploy": "wrangler deploy --config worker/wrangler\.toml",?$
