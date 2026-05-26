@@ -4,3 +4,12 @@
 ^worker:deploy$
 ^wrangler deploy --config worker/wrangler\.toml$
 ^\s*"worker:deploy": "wrangler deploy --config worker/wrangler\.toml",?$
+^https://www\.youtube\.com/watch\?v=YNX6oaiq3Xs$
+^https://www\.facebook\.com/sharer/sharer\.php\?u=\$\{url\}$
+^https://wa\.me/\?text=\$\{text\}%20\$\{url\}$
+^https://t\.me/share/url\?url=\$\{url\}&text=\$\{text\}$
+^https://twitter\.com/intent/tweet\?url=\$\{url\}&text=\$\{text\}$
+(?i)facebook\.com/sharer/sharer\.php
+(?i)wa\.me/\?text
+(?i)t\.me/share/url
+(?i)twitter\.com/intent/tweet

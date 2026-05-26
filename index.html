@@ -118,6 +118,7 @@ body::before {
   margin-bottom: 32px;
   font-variation-settings: "opsz" 144;
 }
+.hero h1.mobile-title { display: none; }
 .hero h1 em {
   font-style: italic;
   font-weight: 400;
@@ -374,6 +375,19 @@ body::before {
   margin-top: 16px;
   position: relative;
 }
+.share-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+  position: relative;
+}
+
+.share-actions .btn {
+  padding: 14px 18px;
+  font-size: 11px;
+}
 
 /* ============ TIMELINE ============ */
 .timeline-section { padding: 100px 0; }
@@ -504,6 +518,17 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
   flex-wrap: wrap;
   gap: 16px;
 }
+.live-highlight {
+  color: var(--accent);
+  font-weight: 800;
+  opacity: 1;
+}
+.footer-disclaimer {
+  margin-bottom: 32px;
+  padding: 24px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
 
 /* ============ MODAL ============ */
 .modal-backdrop {
@@ -600,6 +625,47 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
   color: var(--muted);
 }
 .preview-meta strong { color: var(--ink); }
+.consent-check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.consent-check input {
+  width: auto;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.btn:disabled,
+.btn.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:disabled:hover,
+.btn.disabled:hover {
+  background: var(--accent);
+  transform: none;
+}
+.email-fallback {
+  display: none;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.email-fallback.show { display: block; }
 
 .toast {
   position: fixed;
@@ -690,6 +756,9 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
     font-size: clamp(42px, 17vw, 64px);
     overflow-wrap: anywhere;
   }
+
+  .hero h1.desktop-title { display: none; }
+  .hero h1.mobile-title { display: block; }
 
   .hero-lede,
   .section-intro {
@@ -801,8 +870,14 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
 <section class="hero">
   <div class="container">
     <div class="hero-eyebrow fade-up">26 maggio 2026 · Stato: in attesa del MIT</div>
-    <h1 class="fade-up d1">
+    <h1 class="fade-up d1 desktop-title">
       La Lituania <span class="strike">aspetta Bruxelles</span><br>
+      ha già detto sì.<br>
+      <em>E l'Italia?</em>
+    </h1>
+    <h1 class="fade-up d1 mobile-title">
+      La Lituania<br>
+      non aspetta Bruxelles:<br>
       ha già detto sì.<br>
       <em>E l'Italia?</em>
     </h1>
@@ -921,8 +996,12 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
         Ogni click su una delle azioni aumenta la pressione civica: email, PEC, copia del testo o condivisione.
         Il numero conta la partecipazione, non le email effettivamente inviate.
       </p>
-      <div style="margin-top: 32px;">
-        <a href="#" class="btn btn-secondary" onclick="event.preventDefault(); shareLink();">Condividi questa pagina →</a>
+      <div class="share-actions">
+        <button class="btn btn-secondary" onclick="copyShareLink()">Copia link</button>
+        <button class="btn btn-secondary" onclick="shareTo('facebook')">Facebook</button>
+        <button class="btn btn-secondary" onclick="shareTo('whatsapp')">WhatsApp</button>
+        <button class="btn btn-secondary" onclick="shareTo('telegram')">Telegram</button>
+        <button class="btn btn-secondary" onclick="shareTo('x')">X</button>
       </div>
     </div>
 
@@ -1222,13 +1301,18 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
           Open source · Counter aggregato<br>
           Zero analytics · Zero cookie<br>
           Tutto client-side<br>
-          Compatibile con GitHub Pages
+          GitHub Pages + Cloudflare Worker
         </p>
       </div>
     </div>
+    <div class="footer-disclaimer">
+      <div class="footer-h">Disclaimer</div>
+      <p>Questo sito è un'iniziativa civica indipendente. Non è consulenza legale, non rappresenta Tesla, MIT, partiti o istituzioni, e non garantisce l'esattezza o l'aggiornamento continuo delle fonti. Verifica sempre gli atti ufficiali prima di fare affidamento sulle informazioni riportate.</p>
+    </div>
+
     <div class="footer-bottom">
       <span>© 2026 · Iniziativa civica · Nessun legame con Tesla, MIT o partiti</span>
-      <span>v 1.1 · Ultimo aggiornamento: 26 mag 2026</span>
+      <span><a href="https://www.youtube.com/watch?v=YNX6oaiq3Xs" target="_blank" rel="noopener">Made with love in <span class="live-highlight">live</span></a></span>
     </div>
   </div>
 </footer>
@@ -1240,8 +1324,7 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
     <div class="modal-h">→ Azione 01 / Email ordinaria</div>
     <h3 class="modal-title">La tua lettera al MIT</h3>
     <p style="color: var(--muted); font-size: 15px; margin-bottom: 16px;">
-      Puoi personalizzare nome, città e (opzionale) modello Tesla. Niente di questo viene salvato:
-      tutto resta nel tuo browser.
+      Puoi personalizzare nome, città e (opzionale) modello Tesla. Il testo che vedi qui sotto è esattamente quello che verrà passato al tuo client email. Se il client non si apre, puoi copiarlo come fallback.
     </p>
 
     <label>Il tuo nome (opzionale)</label>
@@ -1267,10 +1350,22 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
     <label>Anteprima testo (modificabile)</label>
     <textarea id="emailBody"></textarea>
 
-    <div class="modal-actions">
-      <button class="btn" onclick="sendEmail()">Apri nel mio client email →</button>
-      <button class="btn" style="background: var(--ink);" onclick="copyText()">Copia testo</button>
+    <div class="preview-meta">
+      <strong>Prima di inviare:</strong> verifica il testo e modificalo se vuoi. Sei tu il mittente e responsabile del contenuto che invii.
     </div>
+
+    <label class="consent-check">
+      <input type="checkbox" id="emailConsent" onchange="toggleActionConsent('email')">
+      <span>Ho verificato il testo e confermo che lo invierò sotto la mia responsabilità.</span>
+    </label>
+
+    <p class="email-fallback" id="emailFallback">Se il client email non si apre, usa <strong>Copia testo</strong> e incollalo manualmente nella tua app di posta.</p>
+
+    <div class="modal-actions">
+      <button class="btn" id="sendEmailBtn" onclick="sendEmail()" disabled>Apri nel mio client email →</button>
+      <button class="btn" id="copyEmailBtn" style="background: var(--ink);" onclick="copyText()" disabled>Copia testo</button>
+    </div>
+
   </div>
 </div>
 
@@ -1294,9 +1389,18 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
     <label>Testo PEC (modificabile)</label>
     <textarea id="pecBody"></textarea>
 
+    <div class="preview-meta">
+      <strong>Prima di inviare via PEC:</strong> verifica il testo, completalo con i tuoi dati e invialo solo se lo condividi.
+    </div>
+
+    <label class="consent-check">
+      <input type="checkbox" id="pecConsent" onchange="toggleActionConsent('pec')">
+      <span>Ho verificato il testo PEC, lo completerò con i miei dati e lo invierò solo se lo condivido.</span>
+    </label>
+
     <div class="modal-actions">
-      <button class="btn" onclick="copyPecText()">Copia tutto</button>
-      <a href="https://www.mit.gov.it" target="_blank" class="btn" style="background: var(--ink); text-decoration: none;" onclick="bumpCounter()">Apri sito MIT</a>
+      <button class="btn" id="copyPecBtn" onclick="copyPecText()" disabled>Copia tutto</button>
+      <button class="btn" id="openMitBtn" style="background: var(--ink);" onclick="openMitSite()" disabled>Apri sito MIT</button>
     </div>
   </div>
 </div>
@@ -1405,6 +1509,7 @@ ${name}
 ${city}, ${new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}`;
 }
 
+
 function buildPecBody() {
   return `Oggetto: Richiesta di pronuncia urgente sull'omologazione del sistema Tesla FSD Supervised in Italia ai sensi dell'art. 39 del Reg. (UE) 2018/858
 
@@ -1461,12 +1566,17 @@ function openModal(type) {
   bumpCounter();
   if (type === 'email') {
     document.getElementById('emailBody').value = buildEmailBody();
+    document.getElementById('emailConsent').checked = false;
+    toggleActionConsent('email');
     document.getElementById('modal-email').classList.add('open');
   } else if (type === 'pec') {
     document.getElementById('pecBody').value = buildPecBody();
+    document.getElementById('pecConsent').checked = false;
+    toggleActionConsent('pec');
     document.getElementById('modal-pec').classList.add('open');
   }
   document.body.style.overflow = 'hidden';
+  document.getElementById('emailFallback').classList.remove('show');
 }
 function closeModal() {
   document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
@@ -1481,10 +1591,29 @@ function updatePreview() {
   document.getElementById('emailBody').value = buildEmailBody();
 }
 
+function toggleActionConsent(type) {
+  if (type === 'email') {
+    const enabled = document.getElementById('emailConsent').checked;
+    document.getElementById('sendEmailBtn').disabled = !enabled;
+    document.getElementById('copyEmailBtn').disabled = !enabled;
+  } else if (type === 'pec') {
+    const enabled = document.getElementById('pecConsent').checked;
+    document.getElementById('copyPecBtn').disabled = !enabled;
+    document.getElementById('openMitBtn').disabled = !enabled;
+  }
+}
+
+function openMitSite() {
+  if (document.getElementById('openMitBtn').disabled) return;
+  bumpCounter();
+  window.open('https://www.mit.gov.it', '_blank', 'noopener,noreferrer');
+}
+
 // ============ EMAIL SEND (mailto:) ============
 // Nota: un mailto può solo aprire il client di posta. Non esiste un evento browser
 // affidabile per sapere se il messaggio viene poi inviato davvero.
 function sendEmail() {
+  if (document.getElementById('sendEmailBtn').disabled) return;
   const to = 'segr.capogabinetto@mit.gov.it';
   // Indirizzi pubblici dei parlamentari (segreterie istituzionali generiche disponibili pubblicamente)
   const cc = [
@@ -1506,9 +1635,14 @@ function sendEmail() {
   setTimeout(() => {
     showToast('✓ Email aperta nel tuo client');
   }, 600);
+
+  setTimeout(() => {
+    document.getElementById('emailFallback').classList.add('show');
+  }, 2500);
 }
 
 function copyText() {
+  if (document.getElementById('copyEmailBtn').disabled) return;
   const text = document.getElementById('emailBody').value;
   navigator.clipboard.writeText(text).then(() => {
     bumpCounter();
@@ -1517,6 +1651,7 @@ function copyText() {
 }
 
 function copyPecText() {
+  if (document.getElementById('copyPecBtn').disabled) return;
   const text = document.getElementById('pecBody').value;
   navigator.clipboard.writeText(text).then(() => {
     bumpCounter();
@@ -1537,20 +1672,30 @@ function toggleFaq(el) {
 }
 
 // ============ SHARE ============
-function shareLink() {
+const SHARE_TEXT = 'L\'Italia attende mentre l\'Europa procede. Scrivi al MIT in 30 secondi.';
+
+function shareUrl() {
+  return window.location.href.split('#')[0];
+}
+
+function copyShareLink() {
   bumpCounter();
-  const url = window.location.href;
-  if (navigator.share) {
-    navigator.share({
-      title: 'FSD Italia - Sblocchiamo la guida autonoma',
-      text: 'L\'Italia attende mentre l\'Europa procede. Scrivi al MIT in 30 secondi.',
-      url: url
-    }).catch(() => {});
-  } else {
-    navigator.clipboard.writeText(url).then(() => {
-      showToast('✓ Link copiato — condividilo dove vuoi');
-    });
-  }
+  navigator.clipboard.writeText(shareUrl()).then(() => {
+    showToast('✓ Link copiato');
+  });
+}
+
+function shareTo(platform) {
+  bumpCounter();
+  const url = encodeURIComponent(shareUrl());
+  const text = encodeURIComponent(SHARE_TEXT);
+  const links = {
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+    whatsapp: `https://wa.me/?text=${text}%20${url}`,
+    telegram: `https://t.me/share/url?url=${url}&text=${text}`,
+    x: `https://twitter.com/intent/tweet?url=${url}&text=${text}`
+  };
+  window.open(links[platform], '_blank', 'noopener,noreferrer,width=720,height=640');
 }
 
 </script>
