@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FSD Italia — Sblocchiamo la guida autonoma in Italia</title>
+<meta name="description" content="Scrivi al Ministero dei Trasporti in 30 secondi. Chiedi al Governo italiano di seguire la Lituania e autorizzare il Tesla Full Self-Driving in Italia.">
+
+<style>
+:root {
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  --bg: #f4f1ea;
+  --bg-dark: #1a1a1a;
+  --ink: #111111;
+  --ink-soft: #2d2d2d;
+  --paper: #faf7f0;
+  --accent: #c8102e;     /* rosso istituzionale */
+  --accent-deep: #8b0a1f;
+  --green: #007a33;      /* verde tricolore */
+  --gold: #d4a017;
+  --line: #d6d0c2;
+  --muted: #6b6359;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-serif);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  overflow-x: hidden;
+  font-feature-settings: "ss01", "ss02";
+}
+
+::selection { background: var(--accent); color: var(--paper); }
+
+/* ============ NOISE TEXTURE ============ */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ============ TOP BAR ============ */
+.topbar {
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(8px);
+}
+.topbar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.logo { font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.logo-dot {
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+.topbar-nav { display: flex; gap: 24px; }
+.topbar-nav a { color: var(--ink); text-decoration: none; transition: color 0.2s; }
+.topbar-nav a:hover { color: var(--accent); }
+
+/* ============ HERO ============ */
+.hero {
+  padding: 80px 0 60px;
+  position: relative;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 32px; height: 1px;
+  background: var(--accent);
+}
+.hero h1 {
+  font-family: var(--font-serif);
+  font-weight: 900;
+  font-size: clamp(48px, 8vw, 112px);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  margin-bottom: 32px;
+  font-variation-settings: "opsz" 144;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+  font-variation-settings: "opsz" 144, "SOFT" 100;
+}
+.hero h1 .strike {
+  position: relative;
+  display: inline-block;
+}
+.hero h1 .strike::after {
+  content: '';
+  position: absolute;
+  left: -4%; right: -4%; top: 52%;
+  height: 6px;
+  background: var(--accent);
+  transform: rotate(-2deg);
+  animation: strike 1.5s cubic-bezier(0.86, 0, 0.07, 1) 0.8s both;
+  transform-origin: left;
+}
+@keyframes strike {
+  0% { transform: scaleX(0) rotate(-2deg); }
+  100% { transform: scaleX(1) rotate(-2deg); }
+}
+.hero-lede {
+  font-size: 22px;
+  line-height: 1.5;
+  max-width: 680px;
+  color: var(--ink-soft);
+  margin-bottom: 48px;
+}
+
+/* ============ STATUS GRID ============ */
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin: 48px 0;
+}
+.status-cell {
+  background: var(--paper);
+  padding: 28px 24px;
+  position: relative;
+}
+.status-cell.alert { background: #2a1212; color: var(--paper); }
+.status-cell.alert .status-label { color: rgba(255,255,255,0.6); }
+.status-cell.alert .status-value { color: var(--paper); }
+.status-cell.win { background: #0d2818; color: var(--paper); }
+.status-cell.win .status-label { color: rgba(255,255,255,0.6); }
+.status-cell.win .status-value { color: var(--paper); }
+
+.status-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.status-value {
+  font-family: var(--font-serif);
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.status-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+.status-cell.alert .status-sub, .status-cell.win .status-sub { color: rgba(255,255,255,0.5); }
+
+@media (max-width: 720px) {
+  .status-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ============ CTA SECTION ============ */
+.cta-section {
+  padding: 100px 0;
+  position: relative;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(200, 16, 46, 0.03) 100%);
+  pointer-events: none;
+}
+.section-title {
+  font-family: var(--font-serif);
+  font-weight: 800;
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  margin-bottom: 24px;
+  font-variation-settings: "opsz" 144;
+}
+.section-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+.section-intro {
+  font-size: 19px;
+  color: var(--ink-soft);
+  max-width: 640px;
+  margin-bottom: 60px;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 60px;
+}
+@media (max-width: 820px) {
+  .action-grid { grid-template-columns: 1fr; }
+}
+
+.action-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 40px;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.action-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 12px 12px 0 var(--ink);
+}
+.action-card.featured {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.action-card.featured:hover {
+  border-color: var(--accent);
+  box-shadow: 12px 12px 0 var(--accent);
+}
+.action-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.action-card.featured .action-num { color: rgba(255,255,255,0.5); }
+.action-title {
+  font-family: var(--font-serif);
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 1.05;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+.action-desc {
+  font-size: 16px;
+  margin-bottom: 32px;
+  opacity: 0.85;
+}
+.action-meta {
+  display: flex;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  opacity: 0.7;
+}
+.action-meta span::before { content: '◆ '; color: var(--accent); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 28px;
+  background: var(--accent);
+  color: var(--paper);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.btn:hover { background: var(--accent-deep); transform: translate(-2px, -2px); }
+.btn::after {
+  content: ' →';
+  transition: transform 0.2s;
+}
+.btn:hover::after { transform: translateX(4px); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--paper);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.btn-secondary:hover {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--paper);
+}
+
+/* ============ COUNTER ============ */
+.counter-box {
+  background: var(--bg-dark);
+  color: var(--paper);
+  padding: 60px 40px;
+  margin: 60px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.counter-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(200, 16, 46, 0.15) 0%, transparent 50%);
+}
+.counter-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 16px;
+  position: relative;
+}
+.counter-number {
+  font-family: var(--font-serif);
+  font-weight: 900;
+  font-size: clamp(64px, 12vw, 144px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variation-settings: "opsz" 144;
+  position: relative;
+  color: var(--paper);
+}
+.counter-sub {
+  font-size: 16px;
+  color: rgba(255,255,255,0.7);
+  margin-top: 16px;
+  position: relative;
+}
+
+/* ============ TIMELINE ============ */
+.timeline-section { padding: 100px 0; }
+
+.timeline {
+  position: relative;
+  padding-left: 32px;
+  border-left: 2px solid var(--line);
+}
+.timeline-item {
+  padding-bottom: 48px;
+  position: relative;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -41px;
+  top: 6px;
+  width: 18px; height: 18px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+}
+.timeline-item.active::before { background: var(--accent); border-color: var(--accent); }
+.timeline-item.now::before {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 8px rgba(200, 16, 46, 0.2);
+  animation: nowPulse 2s ease-in-out infinite;
+}
+@keyframes nowPulse {
+  0%, 100% { box-shadow: 0 0 0 8px rgba(200, 16, 46, 0.2); }
+  50% { box-shadow: 0 0 0 14px rgba(200, 16, 46, 0.05); }
+}
+.timeline-date {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+.timeline-title {
+  font-family: var(--font-serif);
+  font-weight: 800;
+  font-size: 24px;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.timeline-desc {
+  color: var(--ink-soft);
+  font-size: 16px;
+}
+
+/* ============ FAQ ============ */
+.faq-section { padding: 100px 0; background: var(--paper); margin: 0 -100vw; padding-left: calc(100vw - 50%); padding-right: calc(100vw - 50%); }
+.faq-inner { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+.faq-item {
+  border-bottom: 1px solid var(--line);
+  padding: 24px 0;
+  cursor: pointer;
+}
+.faq-question {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.faq-toggle {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--accent);
+  flex-shrink: 0;
+  transition: transform 0.3s;
+}
+.faq-item.open .faq-toggle { transform: rotate(45deg); }
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  font-size: 17px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.faq-item.open .faq-answer {
+  max-height: 600px;
+  padding-top: 16px;
+}
+
+/* ============ FOOTER ============ */
+footer {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 80px 0 40px;
+  margin-top: 100px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+@media (max-width: 720px) { .footer-grid { grid-template-columns: 1fr; } }
+.footer-h {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 16px;
+}
+footer a { color: var(--paper); text-decoration: none; opacity: 0.8; }
+footer a:hover { opacity: 1; color: var(--accent); }
+footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
+.footer-bottom {
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.5);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* ============ MODAL ============ */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.85);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--paper);
+  max-width: 720px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 48px;
+  position: relative;
+  border: 1px solid var(--ink);
+  box-shadow: 16px 16px 0 var(--accent);
+}
+.modal-close {
+  position: absolute;
+  top: 16px; right: 24px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  color: var(--ink);
+  font-family: var(--font-mono);
+}
+.modal-h {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.modal-title {
+  font-family: var(--font-serif);
+  font-weight: 800;
+  font-size: 36px;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.modal label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+  margin-top: 20px;
+}
+.modal input, .modal textarea, .modal select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--ink);
+}
+.modal input:focus, .modal textarea:focus, .modal select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.modal textarea {
+  min-height: 240px;
+  resize: vertical;
+  line-height: 1.5;
+}
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+.preview-meta {
+  background: var(--bg);
+  border: 1px dashed var(--line);
+  padding: 16px;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.preview-meta strong { color: var(--ink); }
+
+.toast {
+  position: fixed;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  background: var(--green);
+  color: var(--paper);
+  padding: 16px 28px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  z-index: 2000;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ============ MARQUEE ============ */
+.marquee {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 16px 0;
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-top: -1px;
+}
+.marquee-track {
+  display: flex;
+  gap: 60px;
+  animation: scroll 30s linear infinite;
+  width: max-content;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.marquee-track span::after { content: ' ◆'; color: var(--accent); margin-left: 60px; }
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ============ INTRO ANIMATIONS ============ */
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.fade-up.d1 { animation-delay: 0.1s; }
+.fade-up.d2 { animation-delay: 0.25s; }
+.fade-up.d3 { animation-delay: 0.4s; }
+.fade-up.d4 { animation-delay: 0.55s; }
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+.tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid currentColor;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <div class="container topbar-inner">
+    <div class="logo"><span class="logo-dot"></span> FSD ITALIA</div>
+    <nav class="topbar-nav">
+      <a href="#agisci">Agisci</a>
+      <a href="#contesto">Contesto</a>
+      <a href="#faq">FAQ</a>
+      <a href="#fonti">Fonti</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow fade-up">26 maggio 2026 · Stato: in attesa del MIT</div>
+    <h1 class="fade-up d1">
+      La Lituania <span class="strike">aspetta Bruxelles</span><br>
+      ha già detto sì.<br>
+      <em>E l'Italia?</em>
+    </h1>
+    <p class="hero-lede fade-up d2">
+      L'Olanda ha approvato il Tesla Full Self-Driving il 10 aprile. La Lituania il 20 maggio.
+      In Italia circolano decine di migliaia di Tesla con l'hardware pronto, ma il Ministero
+      attende. Una decisione politica basterebbe. Scrivi al MIT in 30 secondi.
+    </p>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>🇳🇱 Olanda — 10 aprile 2026</span>
+    <span>🇱🇹 Lituania — 20 maggio 2026</span>
+    <span>🇪🇸 Spagna — test in corso</span>
+    <span>🇧🇪 Belgio — Fiandre valutano</span>
+    <span>🇬🇷 Grecia — legge ad hoc</span>
+    <span>🇮🇪 Irlanda — in colloqui</span>
+    <span>🇱🇺 Lussemburgo — test autorizzati</span>
+    <span>🇮🇹 Italia — ?</span>
+    <!-- duplicato per loop -->
+    <span>🇳🇱 Olanda — 10 aprile 2026</span>
+    <span>🇱🇹 Lituania — 20 maggio 2026</span>
+    <span>🇪🇸 Spagna — test in corso</span>
+    <span>🇧🇪 Belgio — Fiandre valutano</span>
+    <span>🇬🇷 Grecia — legge ad hoc</span>
+    <span>🇮🇪 Irlanda — in colloqui</span>
+    <span>🇱🇺 Lussemburgo — test autorizzati</span>
+    <span>🇮🇹 Italia — ?</span>
+  </div>
+</div>
+
+<!-- ============ STATUS GRID ============ -->
+<section class="container">
+  <div class="status-grid">
+    <div class="status-cell win">
+      <div class="status-label">🇱🇹 Lituania</div>
+      <div class="status-value">5 sett.</div>
+      <div class="status-sub">tra OK olandese e via libera</div>
+    </div>
+    <div class="status-cell alert">
+      <div class="status-label">🇮🇹 Italia</div>
+      <div class="status-value">> 6 sett.</div>
+      <div class="status-sub">e nessuna decisione</div>
+    </div>
+    <div class="status-cell">
+      <div class="status-label">Strumento giuridico</div>
+      <div class="status-value">Art. 39</div>
+      <div class="status-sub">Reg. UE 2018/858 — già disponibile</div>
+    </div>
+    <div class="status-cell">
+      <div class="status-label">Interrogazione Calenda</div>
+      <div class="status-value">4-02971</div>
+      <div class="status-sub">depositata 28 apr — senza risposta</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA SECTION ============ -->
+<section class="cta-section" id="agisci">
+  <div class="container">
+    <div class="hero-eyebrow fade-up">→ Azione</div>
+    <h2 class="section-title">
+      Tre cose,<br>
+      <em>trenta secondi.</em>
+    </h2>
+    <p class="section-intro">
+      Niente registrazione, niente cookie, nessun dato raccolto. Scegli un'azione,
+      apri il tuo client email, e la lettera è pronta. Tutto statico su GitHub Pages.
+    </p>
+
+    <div class="action-grid">
+      <!-- AZIONE 1 -->
+      <div class="action-card featured" onclick="openModal('email')">
+        <div class="action-num">→ AZIONE 01 / RACCOMANDATA</div>
+        <h3 class="action-title">Scrivi al Ministero<br>e a Salvini</h3>
+        <p class="action-desc">
+          Lettera già scritta, basata sui fatti, indirizzata al Gabinetto del MIT, al Capo
+          di Gabinetto, e ai parlamentari che hanno già preso posizione. Il tuo client email
+          si apre con tutto pronto.
+        </p>
+        <div class="action-meta">
+          <span>30 sec</span>
+          <span>Email ordinaria</span>
+          <span>6 destinatari</span>
+        </div>
+        <button class="btn">Apri lettera</button>
+      </div>
+
+      <!-- AZIONE 2 -->
+      <div class="action-card" onclick="openModal('pec')">
+        <div class="action-num">→ AZIONE 02 / UFFICIALE</div>
+        <h3 class="action-title">Invia via PEC<br>(se ne hai una)</h3>
+        <p class="action-desc">
+          La PEC del Gabinetto del MIT accetta solo messaggi da altre PEC.
+          Se hai una PEC personale (le hanno tutti i partita IVA e molti privati),
+          questa è la via che pesa di più. Copia e incolla nel tuo gestore PEC.
+        </p>
+        <div class="action-meta">
+          <span>1 min</span>
+          <span>Posta Certificata</span>
+          <span>Solo PEC → PEC</span>
+        </div>
+        <button class="btn">Genera testo PEC</button>
+      </div>
+    </div>
+
+    <!-- AZIONE 3: Condividi -->
+    <div class="counter-box">
+      <div class="counter-label">→ Azione 03 / Amplifica</div>
+      <div class="counter-number" id="counter">0</div>
+      <div class="counter-sub">azioni preparate da questo browser (solo tu vedi questo numero)</div>
+      <p style="font-size: 14px; opacity: 0.6; max-width: 580px; margin: 24px auto 0; line-height: 1.6;">
+        Con GitHub Pages non esiste un server del progetto che possa contare gli invii. Il numero qui sopra resta
+        nel tuo browser (<code>localStorage</code>): conta aperture, copie email e copie PEC locali, non email realmente spedite.
+        Un <code>mailto:</code> non può sapere se poi premi "Invia" nel client di posta. <br><br>
+        L'unica metrica reale è il <strong>volume di posta che arriva al MIT</strong>. Per farlo crescere, condividi.
+      </p>
+      <div style="margin-top: 32px;">
+        <a href="#" class="btn btn-secondary" onclick="event.preventDefault(); shareLink();">Condividi questa pagina →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ CONTESTO / TIMELINE ============ -->
+<section class="timeline-section" id="contesto">
+  <div class="container">
+    <div class="hero-eyebrow fade-up">→ Contesto</div>
+    <h2 class="section-title">
+      Cosa è successo<br>
+      <em>in 60 giorni.</em>
+    </h2>
+    <p class="section-intro">
+      Il Tesla FSD non è "guida autonoma magica": è un sistema di livello 2 (UN R171),
+      il conducente resta sempre responsabile. Quello che cambia è il quadro autorizzativo.
+      Tre paesi si sono mossi rapidamente. L'Italia no.
+    </p>
+
+    <div class="timeline">
+      <div class="timeline-item active">
+        <div class="timeline-date">10 APR 2026 · OLANDA</div>
+        <h4 class="timeline-title">RDW concede l'omologazione provvisoria</h4>
+        <p class="timeline-desc">L'autorità olandese RDW autorizza Tesla FSD Supervised dopo 18 mesi di test e 1,6 milioni di km. Base giuridica: UN R171 + Art. 39 del Regolamento UE 2018/858.</p>
+      </div>
+
+      <div class="timeline-item active">
+        <div class="timeline-date">28 APR 2026 · SENATO</div>
+        <h4 class="timeline-title">Calenda deposita l'interrogazione 4-02971</h4>
+        <p class="timeline-desc">Il senatore Carlo Calenda chiede a Salvini di "valutare con priorità" l'approvazione del FSD, un confronto tecnico con Tesla e RDW, e una tempistica per l'Italia. Nessuna risposta.</p>
+      </div>
+
+      <div class="timeline-item active">
+        <div class="timeline-date">5 MAG 2026 · BRUXELLES</div>
+        <h4 class="timeline-title">TCMV ascolta, ma non vota</h4>
+        <p class="timeline-desc">Il Comitato tecnico veicoli a motore UE riceve la presentazione olandese in uno slot di un'ora. Nessuna decisione. Prossime riunioni utili: 30 giugno e ottobre 2026.</p>
+      </div>
+
+      <div class="timeline-item active">
+        <div class="timeline-date">18-20 MAG 2026 · LITUANIA</div>
+        <h4 class="timeline-title">Vilnius riconosce, in poche settimane</h4>
+        <p class="timeline-desc">Il Ministero dei Trasporti lituano e l'Agenzia LTSA usano l'Art. 39 per riconoscere l'omologazione olandese. Il Ministro Taminskas firma. Tesla distribuisce il software lo stesso giorno.</p>
+      </div>
+
+      <div class="timeline-item now">
+        <div class="timeline-date">OGGI · ITALIA</div>
+        <h4 class="timeline-title">Il MIT attende. Tu puoi spingere.</h4>
+        <p class="timeline-desc">La Direzione Generale per la Motorizzazione del MIT ha il potere giuridico di applicare l'Art. 39 oggi stesso, come ha fatto la LTSA lituana. Manca solo la decisione politica.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq-section" id="faq">
+  <div class="faq-inner">
+    <div class="hero-eyebrow">→ Domande frequenti</div>
+    <h2 class="section-title" style="margin-bottom: 48px;">
+      Risposte rapide,<br><em>fonti verificate.</em>
+    </h2>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Questo sito raccoglie i miei dati? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">
+        <p><strong>No. Zero.</strong> Niente form di registrazione, niente cookie, niente analytics, niente chiamate a server di terze parti.</p>
+        <p style="margin-top: 12px;">Quando clicchi su "Apri lettera" si genera un link <code>mailto:</code> che apre il tuo client email con il testo già pronto: sei <em>tu</em> a decidere cosa inviare e da quale indirizzo. Tutto il codice gira nel tuo browser: tasto destro → "Visualizza sorgente" e puoi verificarlo. Il codice è anche <a href="#fonti" style="color: var(--accent);">pubblicato su GitHub</a>.</p>
+        <p style="margin-top: 12px;">Il contatore in pagina è memorizzato solo nel tuo browser (<code>localStorage</code>) e <strong>non condiviso con nessuno</strong>. Nessuno — né noi, né il MIT, né Tesla — sa quante persone hanno usato il sito tramite questo contatore.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Possiamo tracciare le email realmente inviate? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">
+        <p><strong>No, non in modo anonimo e solo con GitHub Pages.</strong> Il browser può aprire un <code>mailto:</code>, ma non può sapere se l'utente ha poi premuto "Invia" in Gmail, Outlook, Apple Mail o PEC.</p>
+        <p style="margin-top: 12px;">Le alternative che tracciano davvero richiedono un server, analytics esterni, un form relay o una casella in BCC. Tutte introdurrebbero trattamento di dati personali o servizi terzi. Per questo il sito misura solo l'intenzione locale e dichiara esplicitamente il limite.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Cosa significa esattamente "Art. 39"? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">
+        <p>L'articolo 39 del <strong>Regolamento (UE) 2018/858</strong> ("Esenzioni per nuove tecnologie o nuovi concetti") consente a uno Stato membro di rilasciare un'omologazione provvisoria UE per veicoli che incorporano tecnologie non ancora pienamente coperte dalle norme armonizzate.</p>
+        <p style="margin-top: 12px;">L'omologazione ha <em>validità nazionale</em> ed è notificata alla Commissione e a tutti gli altri Stati membri. Questi ultimi possono <strong>riconoscerla sul proprio territorio in modo discrezionale</strong> (paragrafo 3). È esattamente quello che ha fatto la Lituania il 20 maggio 2026 con l'omologazione olandese del 10 aprile 2026.</p>
+        <p style="margin-top: 12px;">
+          <strong>Testo ufficiale:</strong><br>
+          → <a href="https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX:32018R0858" target="_blank" rel="noopener" style="color: var(--accent);">Regolamento (UE) 2018/858 su EUR-Lex (testo integrale, IT)</a><br>
+          → <a href="https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX:02018R0858-20240701" target="_blank" rel="noopener" style="color: var(--accent);">Versione consolidata (luglio 2024)</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Dove posso leggere l'interrogazione Calenda? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">
+        <p>L'interrogazione a risposta scritta è stata depositata il <strong>28 aprile 2026</strong> dal sen. Carlo Calenda (Azione), indirizzata al Vicepremier e Ministro Salvini. Numero atto: <strong>4-02971</strong>, XIX Legislatura, seduta n. 415.</p>
+        <p style="margin-top: 12px;">
+          <strong>Atto ufficiale:</strong><br>
+          → <a href="https://www.senato.it/show-doc?leg=19&tipodoc=Sindisp&id=1504520" target="_blank" rel="noopener" style="color: var(--accent);">Atto 4-02971 sul sito del Senato</a><br>
+          <strong>Coperture stampa:</strong><br>
+          → <a href="https://insideevs.it/news/794421/tesla-fsd-italia-calenda-salvini/" target="_blank" rel="noopener" style="color: var(--accent);">InsideEVs (con estratti del testo)</a><br>
+          → <a href="https://www.rinnovabili.it/mobilita/automotive/guida-autonoma-supervisionata-il-caso-tesla-arriva-al-senato/" target="_blank" rel="noopener" style="color: var(--accent);">Rinnovabili.it</a>
+        </p>
+        <p style="margin-top: 12px;"><em>Stato: senza risposta del governo al 26 maggio 2026.</em></p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">E le risoluzioni della Camera del 26 novembre 2025? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">
+        <p>La IX Commissione Trasporti della Camera ha approvato <strong>all'unanimità</strong>, con riformulazioni concordate con il governo, quattro risoluzioni bipartisan in materia di guida autonoma:</p>
+        <ul style="margin-top: 12px; padding-left: 24px; line-height: 1.8;">
+          <li><strong>8-00090</strong> — Raimondo (FdI)</li>
+          <li><strong>8-00091</strong> — Pastorella (Azione)</li>
+          <li><strong>8-00092</strong> — Casu (PD)</li>
+          <li><strong>8-00093</strong> — Iaria (M5S)</li>
+        </ul>
+        <p style="margin-top: 12px;">L'impegno comune è modificare l'art. 46 del Codice della Strada (che oggi definisce i veicoli come "macchine guidate dall'uomo") per allinearlo all'art. 34-bis della Convenzione di Vienna del 2022.</p>
+        <p style="margin-top: 12px;">
+          <strong>Documenti:</strong><br>
+          → <a href="https://www.camera.it/leg19/824?anno=2025&commissione=09&giorno=26&mese=11&pagina=&tipo=C" target="_blank" rel="noopener" style="color: var(--accent);">Resoconto IX Commissione, 26 nov 2025</a><br>
+          → <a href="https://www.publicpolicy.it/guida-autonoma-cosa-prevedono-le-risoluzioni-approvate-alla-camera-106850.html" target="_blank" rel="noopener" style="color: var(--accent);">Analisi PublicPolicy delle risoluzioni</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Il FSD è davvero sicuro? E i dati di Tesla? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">
+        <p>Tesla pubblica dati di sicurezza che dichiarano una <strong>riduzione di 5-7 volte degli incidenti</strong> per km percorso con FSD attivo, basati sulla telemetria interna della flotta.</p>
+        <p style="margin-top: 12px;">Analisti indipendenti hanno criticato la metodologia. Il prof. <strong>Philip Koopman</strong> (Carnegie Mellon, ingegneria automotive) ha pubblicato un'analisi che evidenzia come la finestra di attribuzione di 5 secondi, la classificazione delle tipologie stradali e il sotto-conteggio degli incidenti ad alta severità tendano a favorire il FSD nei confronti.</p>
+        <p style="margin-top: 12px;">I regolatori scandinavi (Svezia, Finlandia, Danimarca, Norvegia) hanno espresso scetticismo, in particolare sulla gestione dei limiti di velocità. Il sistema resta giuridicamente <strong>livello SAE 2</strong>: il conducente è sempre responsabile.</p>
+        <p style="margin-top: 12px;">
+          <strong>Fonti:</strong><br>
+          → <a href="https://www.tesla.com/VehicleSafetyReport" target="_blank" rel="noopener" style="color: var(--accent);">Tesla Vehicle Safety Report (dati ufficiali Tesla)</a><br>
+          → <a href="https://philkoopman.substack.com/p/new-tesla-fsd-safety-data" target="_blank" rel="noopener" style="color: var(--accent);">Analisi indipendente di Phil Koopman (CMU)</a><br>
+          → <a href="https://etsc.eu/tesla-approval-pushes-europe-towards-a-road-safety-cliff-edge/" target="_blank" rel="noopener" style="color: var(--accent);">Posizione critica di ETSC (European Transport Safety Council)</a>
+        </p>
+        <p style="margin-top: 12px; font-style: italic;">Questo sito non sostiene che il FSD sia perfetto. Sostiene che <strong>la decisione politica italiana</strong> — favorevole o contraria — debba essere presa apertamente, motivata, e in tempi ragionevoli.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Funziona davvero scrivere al MIT? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">
+        <p>Le email ordinarie ai gabinetti ministeriali vengono registrate ma raramente lette una per una. Il volume però conta: un picco improvviso di posta su uno stesso tema arriva sulla scrivania del Capo di Gabinetto.</p>
+        <p style="margin-top: 12px;">Le <strong>PEC pesano di più</strong> perché entrano nel protocollo ufficiale del Ministero ed è impossibile per l'amministrazione fingere di non averle ricevute. Per questo l'azione PEC, se hai una PEC personale, è l'opzione con il rapporto sforzo/impatto migliore.</p>
+        <p style="margin-top: 12px;">Aggiungere in CC i parlamentari che hanno già preso posizione (Calenda, Pastorella, Raimondo, Casu, Iaria) amplifica l'effetto: loro hanno interesse politico a sollecitare il Ministero su atti che hanno già pubblicamente presentato.</p>
+        <p style="margin-top: 12px;">
+          <strong>Indirizzi MIT verificati:</strong><br>
+          → <a href="https://trasparenza.mit.gov.it/archivio13_strutture-organizzative_-1_14018_25_1.html" target="_blank" rel="noopener" style="color: var(--accent);">Ufficio di Gabinetto (Portale Trasparenza)</a><br>
+          → <a href="https://www.mit.gov.it/node/21" target="_blank" rel="noopener" style="color: var(--accent);">Capo di Gabinetto (sito MIT)</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Chi sta dietro a questo sito? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">
+        <p>Un'iniziativa di cittadini interessati alla policy di guida autonoma in Italia. <strong>Nessun legame con Tesla, né con i partiti citati, né con il MIT.</strong> Niente sponsorizzazioni, niente affiliazioni, niente referral.</p>
+        <p style="margin-top: 12px;">Tutto il codice è open source e pubblicato su GitHub. Tasto destro → "Visualizza sorgente" e puoi controllarlo tu stesso. Se trovi un errore o vuoi proporre un miglioramento (es. aggiungere indirizzi, correggere riferimenti normativi), apri una issue o una pull request sul repository.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">E i veicoli con Hardware 3? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">
+        <p>L'omologazione olandese vale solo per veicoli con <strong>Hardware 4 (AI4)</strong>. Le Tesla con HW3 (circa 4 milioni nel mondo) sono attualmente escluse. Tesla ha annunciato a fine aprile 2026 "micro-factory" dedicate per il retrofit della flotta, e una versione "FSD v14 Lite" per HW3 è attesa in estate 2026.</p>
+        <p style="margin-top: 12px;">Una causa collettiva è in corso nei Paesi Bassi con oltre 4.000 partecipanti da 29 Paesi.</p>
+        <p style="margin-top: 12px;">
+          <strong>Fonti:</strong><br>
+          → <a href="https://hw3claim.nl/en" target="_blank" rel="noopener" style="color: var(--accent);">Iniziativa HW3 Claim (NL)</a><br>
+          → <a href="https://www.basenor.com/blogs/news/tesla-plans-mini-factories-to-upgrade-hw3-computers-and-cameras" target="_blank" rel="noopener" style="color: var(--accent);">Tesla micro-factories piano retrofit</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">Cosa è successo esattamente in Olanda e Lituania? <span class="faq-toggle">+</span></div>
+      <div class="faq-answer">
+        <p><strong>Olanda — 10 aprile 2026:</strong> la RDW (Rijksdienst voor het Wegverkeer, autorità olandese di omologazione) ha rilasciato l'omologazione UE provvisoria al FSD Supervised dopo 18 mesi di test e 1,6 milioni di km percorsi. Base giuridica: <strong>UN R171 (DCAS) + Art. 39 del Reg. UE 2018/858</strong>.</p>
+        <p style="margin-top: 12px;"><strong>Lituania — 18-20 maggio 2026:</strong> la LTSA (Lithuanian Transport Safety Administration) e il Ministero dei Trasporti hanno riconosciuto l'omologazione olandese sul proprio territorio in poche settimane, senza condurre test propri, esercitando la discrezionalità prevista dall'art. 39 paragrafo 3.</p>
+        <p style="margin-top: 12px;">
+          <strong>Fonti dirette:</strong><br>
+          → <a href="https://www.rdw.nl/en/news/2026/rdw-explanation-of-european-type-approval-tesla-with-provisional-validity-in-the-netherlands" target="_blank" rel="noopener" style="color: var(--accent);">RDW — comunicato ufficiale (EN)</a><br>
+          → <a href="https://electrek.co/2026/05/20/tesla-fsd-lithuania-second-european-country/" target="_blank" rel="noopener" style="color: var(--accent);">Electrek — Lituania, 20 maggio 2026</a><br>
+          → <a href="https://www.electrive.com/2026/05/21/tesla-gets-green-light-for-fsd-supervised-in-lithuania/" target="_blank" rel="noopener" style="color: var(--accent);">Electrive — dichiarazione Min. Taminskas</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ FONTI ============ -->
+<section style="padding: 100px 0; background: var(--bg);" id="fonti">
+  <div class="container">
+    <div class="hero-eyebrow">→ Tutte le fonti</div>
+    <h2 class="section-title">
+      Verifica tu stesso<br><em>ogni affermazione.</em>
+    </h2>
+    <p class="section-intro">
+      Tutte le fonti citate in questo sito sono accessibili pubblicamente. Se hai dubbi, controlla.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; margin-top: 48px;">
+
+      <!-- BOX 1 -->
+      <div style="background: var(--paper); padding: 32px; border-left: 4px solid var(--accent);">
+        <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px;">→ Normativa europea</div>
+        <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em;">Reg. (UE) 2018/858</h3>
+        <p style="font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 16px;">Il regolamento che disciplina l'omologazione UE dei veicoli a motore. L'art. 39 è la base giuridica usata da Olanda e Lituania.</p>
+        <a href="https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX:32018R0858" target="_blank" rel="noopener" style="color: var(--accent); font-family: var(--font-mono); font-size: 12px; text-decoration: none;">Apri su EUR-Lex →</a>
+      </div>
+
+      <!-- BOX 2 -->
+      <div style="background: var(--paper); padding: 32px; border-left: 4px solid var(--accent);">
+        <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px;">→ Standard tecnico</div>
+        <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em;">UN Regulation 171</h3>
+        <p style="font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 16px;">Lo standard UNECE su Driver Control Assistance Systems (DCAS), in vigore dal 30 settembre 2024. Definisce i requisiti per sistemi livello SAE 2 con assistenza longitudinale e laterale sostenuta.</p>
+        <a href="https://unece.org/transport/documents/2024/03/standards/un-regulation-no-171-uniform-provisions-concerning-approval" target="_blank" rel="noopener" style="color: var(--accent); font-family: var(--font-mono); font-size: 12px; text-decoration: none;">Apri su UNECE →</a>
+      </div>
+
+      <!-- BOX 3 -->
+      <div style="background: var(--paper); padding: 32px; border-left: 4px solid var(--accent);">
+        <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px;">→ Atto parlamentare</div>
+        <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em;">Interrogazione 4-02971</h3>
+        <p style="font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 16px;">Atto di sindacato ispettivo del sen. Carlo Calenda al Min. Salvini. Depositata 28 aprile 2026, XIX Legislatura, seduta 415. Stato: senza risposta.</p>
+        <a href="https://www.senato.it/show-doc?leg=19&tipodoc=Sindisp&id=1504520" target="_blank" rel="noopener" style="color: var(--accent); font-family: var(--font-mono); font-size: 12px; text-decoration: none;">Apri su Senato.it →</a>
+      </div>
+
+      <!-- BOX 4 -->
+      <div style="background: var(--paper); padding: 32px; border-left: 4px solid var(--accent);">
+        <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px;">→ Risoluzioni Camera</div>
+        <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em;">8-00090 / 091 / 092 / 093</h3>
+        <p style="font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 16px;">Quattro risoluzioni bipartisan (Raimondo, Pastorella, Casu, Iaria) approvate all'unanimità dalla IX Commissione Trasporti il 26 novembre 2025.</p>
+        <a href="https://www.camera.it/leg19/824?anno=2025&commissione=09&giorno=26&mese=11&pagina=&tipo=C" target="_blank" rel="noopener" style="color: var(--accent); font-family: var(--font-mono); font-size: 12px; text-decoration: none;">Apri su Camera.it →</a>
+      </div>
+
+      <!-- BOX 5 -->
+      <div style="background: var(--paper); padding: 32px; border-left: 4px solid var(--accent);">
+        <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px;">→ Olanda</div>
+        <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em;">Comunicato RDW</h3>
+        <p style="font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 16px;">Comunicato ufficiale dell'autorità olandese RDW sull'omologazione provvisoria UE del FSD del 10 aprile 2026.</p>
+        <a href="https://www.rdw.nl/en/news/2026/rdw-explanation-of-european-type-approval-tesla-with-provisional-validity-in-the-netherlands" target="_blank" rel="noopener" style="color: var(--accent); font-family: var(--font-mono); font-size: 12px; text-decoration: none;">Apri su RDW.nl →</a>
+      </div>
+
+      <!-- BOX 6 -->
+      <div style="background: var(--paper); padding: 32px; border-left: 4px solid var(--accent);">
+        <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px;">→ Dati di sicurezza</div>
+        <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em;">Vehicle Safety Report</h3>
+        <p style="font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 16px;">Report ufficiale di Tesla sulla sicurezza FSD. <em>Da leggere assieme</em> all'analisi critica del prof. Phil Koopman.</p>
+        <a href="https://www.tesla.com/VehicleSafetyReport" target="_blank" rel="noopener" style="color: var(--accent); font-family: var(--font-mono); font-size: 12px; text-decoration: none; display: block;">Tesla VSR →</a>
+        <a href="https://philkoopman.substack.com/p/new-tesla-fsd-safety-data" target="_blank" rel="noopener" style="color: var(--accent); font-family: var(--font-mono); font-size: 12px; text-decoration: none; margin-top: 4px; display: block;">Analisi indipendente Koopman →</a>
+      </div>
+
+      <!-- BOX 7 -->
+      <div style="background: var(--paper); padding: 32px; border-left: 4px solid var(--accent);">
+        <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px;">→ Posizione critica</div>
+        <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em;">ETSC</h3>
+        <p style="font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 16px;">Il Consiglio Europeo per la Sicurezza dei Trasporti ha chiesto pubblicamente di rallentare l'approvazione UE. Posizione importante da conoscere.</p>
+        <a href="https://etsc.eu/tesla-approval-pushes-europe-towards-a-road-safety-cliff-edge/" target="_blank" rel="noopener" style="color: var(--accent); font-family: var(--font-mono); font-size: 12px; text-decoration: none;">Apri su ETSC.eu →</a>
+      </div>
+
+      <!-- BOX 8 -->
+      <div style="background: var(--paper); padding: 32px; border-left: 4px solid var(--accent);">
+        <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px;">→ Quadro italiano</div>
+        <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em;">DM 70/2018 "Smart Road"</h3>
+        <p style="font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 16px;">Il decreto del MIT (ex Delrio) che oggi disciplina la sperimentazione su strada di veicoli a guida automatica in Italia. Non è una norma di omologazione.</p>
+        <a href="https://www.mit.gov.it/normativa/decreto-ministeriale-numero-70-del-28022018" target="_blank" rel="noopener" style="color: var(--accent); font-family: var(--font-mono); font-size: 12px; text-decoration: none;">Apri su MIT.gov.it →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-h">A proposito</div>
+        <p>Iniziativa civica indipendente per chiedere al Ministero dei Trasporti italiano di pronunciarsi rapidamente sull'approvazione del Tesla Full Self-Driving Supervised, riconoscendo l'omologazione provvisoria olandese ai sensi dell'art. 39 del Regolamento (UE) 2018/858 — come fatto dalla Lituania il 20 maggio 2026.</p>
+      </div>
+      <div>
+        <div class="footer-h">Fonti</div>
+        <p>
+          <a href="https://www.senato.it" target="_blank" rel="noopener">Senato.it (atto 4-02971)</a><br>
+          <a href="https://www.camera.it" target="_blank" rel="noopener">Camera (ris. 8-00090/091/092/093)</a><br>
+          <a href="https://www.rdw.nl" target="_blank" rel="noopener">RDW (NL)</a><br>
+          <a href="https://www.mit.gov.it" target="_blank" rel="noopener">mit.gov.it</a>
+        </p>
+      </div>
+      <div>
+        <div class="footer-h">Tecnico</div>
+        <p>
+          Open source · Zero tracking remoto<br>
+          Zero analytics · Zero cookie<br>
+          Tutto client-side<br>
+          Compatibile con GitHub Pages
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 · Iniziativa civica · Nessun legame con Tesla, MIT o partiti</span>
+      <span>v 1.1 · Ultimo aggiornamento: 26 mag 2026</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MODAL EMAIL ============ -->
+<div class="modal-backdrop" id="modal-email">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-h">→ Azione 01 / Email ordinaria</div>
+    <h3 class="modal-title">La tua lettera al MIT</h3>
+    <p style="color: var(--muted); font-size: 15px; margin-bottom: 16px;">
+      Puoi personalizzare nome, città e (opzionale) modello Tesla. Niente di questo viene salvato:
+      tutto resta nel tuo browser.
+    </p>
+
+    <label>Il tuo nome (opzionale)</label>
+    <input type="text" id="userName" placeholder="Mario Rossi" oninput="updatePreview()">
+
+    <label>La tua città</label>
+    <input type="text" id="userCity" placeholder="Milano" oninput="updatePreview()">
+
+    <label>Sei proprietario Tesla?</label>
+    <select id="userTesla" onchange="updatePreview()">
+      <option value="no">No, sono solo un cittadino interessato</option>
+      <option value="hw4">Sì, ho una Tesla con Hardware 4</option>
+      <option value="hw3">Sì, ho una Tesla con Hardware 3</option>
+      <option value="generic">Sì, sono proprietario Tesla</option>
+    </select>
+
+    <label>Anteprima destinatari</label>
+    <div class="preview-meta" id="recipientsPreview">
+      <strong>A:</strong> segr.capogabinetto@mit.gov.it<br>
+      <strong>CC:</strong> Capo di Gabinetto · Sen. Calenda · On. Pastorella · On. Raimondo · On. Casu · On. Iaria
+    </div>
+
+    <label>Anteprima testo (modificabile)</label>
+    <textarea id="emailBody"></textarea>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="sendEmail()">Apri nel mio client email →</button>
+      <button class="btn" style="background: var(--ink);" onclick="copyText()">Copia testo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL PEC ============ -->
+<div class="modal-backdrop" id="modal-pec">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-h">→ Azione 02 / Posta Certificata</div>
+    <h3 class="modal-title">Testo per la tua PEC</h3>
+    <p style="color: var(--muted); font-size: 15px; margin-bottom: 20px;">
+      La PEC del Gabinetto MIT (<code>ufficio.gabinetto@pec.mit.gov.it</code>) accetta
+      <strong>solo messaggi inviati da altre PEC</strong>. Copia il testo qui sotto
+      e invialo dal tuo account PEC (Aruba, Poste, Legalmail, ecc.).
+    </p>
+
+    <div class="preview-meta">
+      <strong>Destinatario PEC:</strong> ufficio.gabinetto@pec.mit.gov.it<br>
+      <strong>Oggetto:</strong> Richiesta di pronuncia urgente sull'omologazione del sistema Tesla FSD Supervised in Italia
+    </div>
+
+    <label>Testo PEC (modificabile)</label>
+    <textarea id="pecBody"></textarea>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="copyPecText()">Copia tutto</button>
+      <a href="https://www.mit.gov.it" target="_blank" class="btn" style="background: var(--ink); text-decoration: none;">Apri sito MIT</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast">✓ Testo copiato</div>
+
+<script>
+// ============ COUNTER (localStorage only) ============
+function initCounter() {
+  const today = new Date().toDateString();
+  const stored = localStorage.getItem('fsd_counter');
+  let data = stored ? JSON.parse(stored) : { date: today, count: 0 };
+  if (data.date !== today) data = { date: today, count: 0 };
+  document.getElementById('counter').textContent = data.count.toLocaleString('it-IT');
+  return data;
+}
+function bumpCounter() {
+  const today = new Date().toDateString();
+  const stored = localStorage.getItem('fsd_counter');
+  let data = stored ? JSON.parse(stored) : { date: today, count: 0 };
+  if (data.date !== today) data = { date: today, count: 0 };
+  data.count += 1;
+  localStorage.setItem('fsd_counter', JSON.stringify(data));
+  animateCounter(data.count);
+}
+function animateCounter(target) {
+  const el = document.getElementById('counter');
+  const current = parseInt(el.textContent.replace(/\D/g, '')) || 0;
+  const start = Date.now();
+  const duration = 800;
+  function step() {
+    const elapsed = Date.now() - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = Math.round(current + (target - current) * eased);
+    el.textContent = value.toLocaleString('it-IT');
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  step();
+}
+initCounter();
+
+// ============ EMAIL TEMPLATES ============
+function buildEmailBody() {
+  const name = document.getElementById('userName').value.trim() || '[Il tuo nome]';
+  const city = document.getElementById('userCity').value.trim() || '[Città]';
+  const tesla = document.getElementById('userTesla').value;
+
+  let teslaLine = '';
+  if (tesla === 'hw4') teslaLine = 'Sono proprietario di una Tesla con hardware AI4 (HW4), già tecnicamente compatibile con il sistema FSD Supervised approvato in Olanda e Lituania.';
+  else if (tesla === 'hw3') teslaLine = 'Sono proprietario di una Tesla con hardware HW3, attualmente non compatibile con la versione FSD oggetto di approvazione, ma comunque interessato al quadro normativo italiano.';
+  else if (tesla === 'generic') teslaLine = 'Sono proprietario di un veicolo Tesla.';
+  else teslaLine = 'Scrivo in qualità di cittadino interessato alla politica nazionale in materia di sicurezza stradale e innovazione tecnologica.';
+
+  return `Gentile Capo di Gabinetto,
+On. Vicepremier e Ministro Salvini,
+Onorevoli Senatore Calenda, Deputati Pastorella, Raimondo, Casu, Iaria,
+
+mi chiamo ${name} e scrivo da ${city}. ${teslaLine}
+
+Il 10 aprile 2026 l'autorità olandese RDW ha rilasciato un'omologazione provvisoria al sistema Tesla Full Self-Driving (Supervised) ai sensi dell'art. 39 del Regolamento (UE) 2018/858, in combinato disposto con il Regolamento UN R171 (DCAS). Il 20 maggio 2026 la Lituania, attraverso il Ministero dei Trasporti e l'Agenzia LTSA, ha riconosciuto tale omologazione sul proprio territorio in poche settimane, esercitando la discrezionalità che la normativa europea riconosce a ciascuno Stato membro.
+
+Altri Paesi (Spagna, Belgio - Fiandre, Grecia, Irlanda, Lussemburgo) si stanno muovendo nella stessa direzione. In Italia, al contrario, il Ministero ha finora mantenuto una posizione attendista in attesa del voto del Comitato tecnico veicoli a motore (TCMV) dell'Unione Europea, le cui prossime riunioni utili sono previste per giugno e ottobre 2026.
+
+Sul piano parlamentare, il Senatore Carlo Calenda ha depositato in data 28 aprile 2026 l'interrogazione a risposta scritta n. 4-02971 (XIX Legislatura, seduta n. 415), tuttora senza risposta. Il 26 novembre 2025 la IX Commissione Trasporti della Camera ha approvato all'unanimità quattro risoluzioni bipartisan (Raimondo 8-00090, Pastorella 8-00091, Casu 8-00092, Iaria 8-00093) che impegnano il Governo ad adottare iniziative normative in materia di guida autonoma.
+
+Mi rivolgo pertanto al Ministero per chiedere:
+
+1. che la Direzione Generale per la Motorizzazione esamini, ai sensi dell'art. 39 del Reg. (UE) 2018/858, la documentazione di omologazione trasmessa dall'autorità olandese RDW e già notificata alla Commissione e a tutti gli Stati membri;
+
+2. l'apertura di un tavolo tecnico tra MIT, Tesla e RDW, come già richiesto dall'interrogazione 4-02971;
+
+3. una decisione esplicita e tempestiva — favorevole o contraria — sul riconoscimento dell'omologazione provvisoria olandese in Italia, dandone comunicazione pubblica;
+
+4. una risposta formale all'interrogazione del Senatore Calenda ai sensi del Regolamento del Senato.
+
+L'attivazione del sistema FSD Supervised in Italia, alle medesime condizioni vigenti in Olanda e Lituania (con conducente sempre legalmente responsabile, conformemente al regolamento UN R171), consentirebbe di allineare il Paese ai partner europei e di abilitare un sistema di assistenza alla guida che — secondo i dati pubblicati da Tesla e i precedenti operativi in Olanda e in altri mercati — può contribuire alla riduzione degli incidenti dovuti a distrazione o errore umano.
+
+In Italia circolano decine di migliaia di veicoli Tesla già dotati dell'hardware necessario. L'inerzia normativa rispetto ad altri Stati membri non ha più giustificazione tecnica, vista la base giuridica europea già pienamente operativa.
+
+Ringrazio per l'attenzione e resto in attesa di un riscontro.
+
+Cordiali saluti,
+${name}
+${city}, ${new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+}
+
+function buildPecBody() {
+  return `Oggetto: Richiesta di pronuncia urgente sull'omologazione del sistema Tesla FSD Supervised in Italia ai sensi dell'art. 39 del Reg. (UE) 2018/858
+
+Al Gabinetto del Ministro
+Ministero delle Infrastrutture e dei Trasporti
+ufficio.gabinetto@pec.mit.gov.it
+
+p.c. On. Vicepremier e Ministro Matteo Salvini
+p.c. Direzione Generale per la Motorizzazione
+
+PREMESSO CHE
+
+— in data 10 aprile 2026 l'autorità olandese di omologazione dei veicoli (Rijksdienst voor het Wegverkeer — RDW) ha rilasciato un'omologazione provvisoria del sistema Tesla Full Self-Driving (Supervised) ai sensi dell'art. 39 del Regolamento (UE) 2018/858, in combinato disposto con il Regolamento UN R171 (Driver Control Assistance Systems);
+
+— in data 18-20 maggio 2026 la Repubblica di Lituania, attraverso il Ministero dei Trasporti (Susisiekimo ministerija) e l'Agenzia per la Sicurezza dei Trasporti (LTSA), ha riconosciuto sul proprio territorio l'omologazione olandese, esercitando la discrezionalità prevista dall'art. 39 paragrafo 3 del medesimo Regolamento;
+
+— il Comitato Tecnico Veicoli a Motore (TCMV) dell'Unione Europea, nella riunione del 5 maggio 2026, non ha proceduto a voto e ha rinviato la decisione alle prossime sedute utili (30 giugno e ottobre 2026);
+
+— in data 28 aprile 2026 il Senatore Carlo Calenda ha depositato in Senato l'interrogazione a risposta scritta n. 4-02971 (XIX Legislatura, seduta n. 415) rivolta al Vicepremier e Ministro delle Infrastrutture e dei Trasporti, tuttora senza riscontro;
+
+— in data 26 novembre 2025 la IX Commissione Trasporti della Camera ha approvato all'unanimità le risoluzioni 8-00090 (Raimondo), 8-00091 (Pastorella), 8-00092 (Casu), 8-00093 (Iaria) in materia di guida autonoma;
+
+— in Italia circolano decine di migliaia di veicoli Tesla dotati dell'hardware AI4 tecnicamente compatibile con il sistema FSD Supervised;
+
+CONSIDERATO CHE
+
+— la Direzione Generale per la Motorizzazione del MIT è l'autorità nazionale di omologazione competente ai sensi del Regolamento (UE) 2018/858;
+
+— il riconoscimento di un'omologazione provvisoria rilasciata da altro Stato membro non richiede alcun atto normativo di rango primario, ma una decisione amministrativa dell'autorità competente;
+
+CHIEDO
+
+1) di voler esaminare con sollecitudine la documentazione di omologazione trasmessa dall'autorità olandese RDW relativa al sistema Tesla FSD Supervised;
+
+2) di rendere pubblica la posizione del Ministero in merito al riconoscimento di tale omologazione sul territorio nazionale, in conformità con quanto già fatto da altri Stati membri;
+
+3) di assicurare risposta formale all'interrogazione 4-02971 ai sensi del Regolamento del Senato;
+
+4) di valutare l'apertura di un confronto tecnico tra MIT, costruttore e RDW olandese, come già sollecitato dall'atto di sindacato ispettivo richiamato.
+
+Si fa presente che, in assenza di una decisione esplicita, l'Italia rischia di trovarsi in una posizione di disallineamento sostanziale rispetto agli altri Stati membri che hanno già esercitato la propria discrezionalità in un senso o nell'altro.
+
+Distinti saluti,
+
+[Nome e Cognome]
+[Indirizzo PEC mittente]
+${new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+}
+
+// ============ MODAL HANDLERS ============
+let currentModal = null;
+function openModal(type) {
+  currentModal = type;
+  if (type === 'email') {
+    document.getElementById('emailBody').value = buildEmailBody();
+    document.getElementById('modal-email').classList.add('open');
+  } else if (type === 'pec') {
+    document.getElementById('pecBody').value = buildPecBody();
+    document.getElementById('modal-pec').classList.add('open');
+  }
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.modal-backdrop').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) closeModal(); });
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function updatePreview() {
+  document.getElementById('emailBody').value = buildEmailBody();
+}
+
+// ============ EMAIL SEND (mailto:) ============
+// Nota: un mailto può solo aprire il client di posta. Non esiste un evento browser
+// affidabile per sapere se il messaggio viene poi inviato davvero.
+function sendEmail() {
+  const to = 'segr.capogabinetto@mit.gov.it';
+  // Indirizzi pubblici dei parlamentari (segreterie istituzionali generiche disponibili pubblicamente)
+  const cc = [
+    'urp@mit.gov.it',
+    'segreteria.calenda@senato.it',
+    'pastorella_g@camera.it',
+    'raimondo_c@camera.it',
+    'casu_a@camera.it',
+    'iaria_a@camera.it'
+  ].join(',');
+  const subject = encodeURIComponent('Richiesta di pronuncia sull\'omologazione del sistema Tesla FSD Supervised in Italia');
+  const body = encodeURIComponent(document.getElementById('emailBody').value);
+  const mailto = `mailto:${to}?cc=${cc}&subject=${subject}&body=${body}`;
+
+  bumpCounter();
+  window.location.href = mailto;
+
+  // Mostra un piccolo conferma dopo 600ms
+  setTimeout(() => {
+    showToast('✓ Email aperta nel tuo client');
+  }, 600);
+}
+
+function copyText() {
+  const text = document.getElementById('emailBody').value;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('✓ Testo email copiato');
+    bumpCounter();
+  });
+}
+
+function copyPecText() {
+  const text = document.getElementById('pecBody').value;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('✓ Testo PEC copiato — incollalo nel tuo gestore PEC');
+    bumpCounter();
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ============ FAQ ============
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
+
+// ============ SHARE ============
+function shareLink() {
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({
+      title: 'FSD Italia - Sblocchiamo la guida autonoma',
+      text: 'L\'Italia attende mentre l\'Europa procede. Scrivi al MIT in 30 secondi.',
+      url: url
+    }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(url).then(() => {
+      showToast('✓ Link copiato — condividilo dove vuoi');
+    });
+  }
+}
+
+</script>
+
+</body>
+</html>
