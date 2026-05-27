@@ -1324,7 +1324,7 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
     <div class="modal-h">→ Azione 01 / Email ordinaria</div>
     <h3 class="modal-title">La tua lettera al MIT</h3>
     <p style="color: var(--muted); font-size: 15px; margin-bottom: 16px;">
-      Puoi aggiungere nome, città e, se vuoi, il tipo di Tesla. Il testo qui sotto è quello che verrà passato al tuo client email. Prima di inviare puoi leggerlo, modificarlo o copiarlo manualmente.
+      Puoi aggiungere nome e città. Il testo qui sotto è quello che verrà passato al tuo client email. Prima di inviare puoi leggerlo, modificarlo o copiarlo manualmente.
     </p>
 
     <label>Il tuo nome (opzionale)</label>
@@ -1332,14 +1332,6 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
 
     <label>La tua città</label>
     <input type="text" id="userCity" placeholder="Milano" oninput="updatePreview()">
-
-    <label>Sei proprietario Tesla?</label>
-    <select id="userTesla" onchange="updatePreview()">
-      <option value="no">No, sono solo un cittadino interessato</option>
-      <option value="hw4">Sì, ho una Tesla con Hardware 4</option>
-      <option value="hw3">Sì, ho una Tesla con Hardware 3</option>
-      <option value="generic">Sì, sono proprietario Tesla</option>
-    </select>
 
     <label>Anteprima destinatari</label>
     <div class="preview-meta" id="recipientsPreview">
@@ -1468,19 +1460,12 @@ initCounter();
 function buildEmailBody() {
   const name = document.getElementById('userName').value.trim() || '[Il tuo nome]';
   const city = document.getElementById('userCity').value.trim() || '[Città]';
-  const tesla = document.getElementById('userTesla').value;
-
-  let teslaLine = '';
-  if (tesla === 'hw4') teslaLine = 'Sono proprietario di una Tesla con hardware AI4 (HW4), tecnicamente compatibile con il sistema FSD Supervised approvato in Olanda e riconosciuto in Lituania.';
-  else if (tesla === 'hw3') teslaLine = 'Sono proprietario di una Tesla con hardware HW3, al momento non compatibile con la versione FSD oggetto di approvazione, ma comunque interessato al quadro normativo italiano.';
-  else if (tesla === 'generic') teslaLine = 'Sono proprietario di un veicolo Tesla.';
-  else teslaLine = 'Scrivo in qualità di cittadino interessato alla politica nazionale in materia di sicurezza stradale e innovazione tecnologica.';
 
   return `Gentile Capo di Gabinetto,
 On. Vicepremier e Ministro Salvini,
 Onorevoli Senatore Calenda, Deputati Pastorella, Raimondo, Casu, Iaria,
 
-mi chiamo ${name} e scrivo da ${city}. ${teslaLine}
+mi chiamo ${name} e scrivo da ${city} come cittadino interessato alla sicurezza stradale, all'innovazione tecnologica e alle politiche italiane sulla guida autonoma.
 
 Il 10 aprile 2026 l'autorità olandese RDW ha rilasciato un'omologazione provvisoria al sistema Tesla Full Self-Driving (Supervised), ai sensi dell'art. 39 del Regolamento (UE) 2018/858 e del Regolamento UN R171 (DCAS). Il 20 maggio 2026 la Lituania, attraverso il Ministero dei Trasporti e l'Agenzia LTSA, ha riconosciuto quell'omologazione sul proprio territorio in poche settimane, usando la discrezionalità prevista dalla normativa europea per ciascuno Stato membro.
 
