@@ -13,6 +13,10 @@
 (?i)wa\.me/\?text
 (?i)t\.me/share/url
 (?i)twitter\.com/intent/tweet
+# Public canonical site URLs used in Open Graph / Twitter Card meta tags.
+^https://fsdperitalia\.org/$
+^https://fsdperitalia\.org/assets/og-image\.jpg$
+(?i)fsdperitalia\.org
 # Public institutional addresses of parliamentarians (published on senato.it / camera.it).
 ^carlo\.calenda@senato\.it$
 ^pastorella_g@camera\.it$
