@@ -869,7 +869,7 @@ footer p { font-size: 15px; line-height: 1.6; opacity: 0.8; }
 <!-- ============ HERO ============ -->
 <section class="hero">
   <div class="container">
-    <div class="hero-eyebrow fade-up">Ultimo aggiornamento verificato: 29 maggio 2026 · MIT: in attesa di risposta</div>
+    <div class="hero-eyebrow fade-up">Oggi: <time data-current-date datetime="2026-05-29">29 maggio 2026</time> · MIT: in attesa di risposta</div>
     <h1 class="fade-up d1 desktop-title">
       Tre Paesi UE <span class="strike">aspettano Bruxelles</span><br>
       hanno già detto sì.<br>
@@ -1669,6 +1669,32 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 }
+
+// ============ CURRENT DATE ============
+function updateCurrentDate() {
+  const el = document.querySelector('[data-current-date]');
+  if (!el) return;
+
+  const now = new Date();
+  el.textContent = new Intl.DateTimeFormat('it-IT', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'Europe/Rome'
+  }).format(now);
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    timeZone: 'Europe/Rome'
+  }).formatToParts(now).reduce((acc, part) => {
+    acc[part.type] = part.value;
+    return acc;
+  }, {});
+  el.dateTime = `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+updateCurrentDate();
 
 // ============ FAQ ============
 function toggleFaq(el) {
